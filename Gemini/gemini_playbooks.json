@@ -1,0 +1,90 @@
+{
+  "koboldcpp": [
+    {
+      "task": "Manually restart the KoboldCpp service",
+      "tags": [
+        "restart",
+        "manual"
+      ],
+      "conditions": [
+        "User requests restart"
+      ],
+      "steps": [
+        "command: restart_kobold"
+      ],
+      "observations": "The observer will issue a stop command, wait, and then a start command for KoboldCpp.",
+      "last_attempt": null,
+      "last_result": null
+    }
+  ],
+  "comfyui": [
+    {
+      "task": "Manually restart the ComfyUI service",
+      "tags": [
+        "restart",
+        "manual"
+      ],
+      "conditions": [
+        "User requests restart"
+      ],
+      "steps": [
+        "command: restart_comfyui"
+      ],
+      "observations": "The observer will issue a stop command, wait, and then a start command for ComfyUI.",
+      "last_attempt": null,
+      "last_result": null
+    }
+  ],
+  "sillytavern": [
+    {
+      "task": "Manually restart the SillyTavern service",
+      "tags": [
+        "restart",
+        "manual"
+      ],
+      "conditions": [
+        "User requests restart"
+      ],
+      "steps": [
+        "command: restart_sillytavern"
+      ],
+      "observations": "The observer will issue a stop command, wait, and then a start command for SillyTavern.",
+      "last_attempt": null,
+      "last_result": null
+    }
+  ],
+  "system": [
+    {
+      "task": "Force an immediate status update",
+      "tags": [
+        "status",
+        "check"
+      ],
+      "conditions": [
+        "User requests a status refresh"
+      ],
+      "steps": [
+        "command: status"
+      ],
+      "observations": "The observer will immediately write the latest process status to status.json.",
+      "last_attempt": null,
+      "last_result": null
+    },
+    {
+      "task": "Shut down all monitored services",
+      "tags": [
+        "shutdown",
+        "all"
+      ],
+      "conditions": [
+        "User requests a full shutdown"
+      ],
+      "steps": [
+        "command: shutdown_all"
+      ],
+      "observations": "The observer will stop KoboldCpp, ComfyUI, and SillyTavern.",
+      "last_attempt": null,
+      "last_result": null
+    }
+  ]
+}

@@ -1,0 +1,317 @@
+{
+  "3": {
+    "inputs": {
+      "seed": %seed%,
+      "steps": %steps%,
+      "cfg": %scale%,
+      "sampler_name": "%sampler%",
+      "scheduler": "%scheduler%",
+      "denoise": %denoise%,
+      "model": [
+        "4",
+        0
+      ],
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "latent_image": [
+        "5",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "4": {
+    "inputs": {
+      "ckpt_name": "%model%"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "5": {
+    "inputs": {
+      "width": %width%,
+      "height": %height%,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Empty Latent Image"
+    }
+  },
+  "6": {
+    "inputs": {
+      "text": [
+        "158",
+        0
+      ],
+      "clip": [
+        "4",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "7": {
+    "inputs": {
+      "text": "%negative_prompt%",
+      "clip": [
+        "4",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "8": {
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "160",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "9": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "103": {
+    "inputs": {
+      "value": "%prompt%"
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Global Prompt"
+    }
+  },
+  "106": {
+    "inputs": {
+      "mode": "raw value",
+      "input": [
+        "158",
+        0
+      ]
+    },
+    "class_type": "DisplayAny",
+    "_meta": {
+      "title": "Positive Prompt used"
+    }
+  },
+  "132": {
+    "inputs": {
+      "name": "Accessories",
+      "items": "glasses slightly askew\nloose ribbons\ndangling earrings\ntight choker\nthin scarf\ntilted hat\ncat ears\ncat ears and tail\nheadphones\nmetal bracelet\nbelt\narmband\nchain necklace\ngoggles\neye patch\ntail\nhorns\nhalo\nhair clips\ncat tail\ncollar\nleash\ngarter belt",
+      "separator": ", ",
+      "active": false
+    },
+    "class_type": "MetadataTextToListDict",
+    "_meta": {
+      "title": "Accessories"
+    }
+  },
+  "134": {
+    "inputs": {
+      "name": "Facial Expressions",
+      "items": "smiling\nblushing\nangry\ncrying\nsurprised\nwink\nsmirk\ngrin\nsweating\nlaughing\nshy\nembarrassed\nbiting lip\nmoaning\nahegao\ntongue out\nbegging",
+      "separator": ", ",
+      "active": false
+    },
+    "class_type": "MetadataTextToListDict",
+    "_meta": {
+      "title": "Facial Expressions"
+    }
+  },
+  "138": {
+    "inputs": {
+      "term_1": [
+        "157",
+        0
+      ],
+      "term_2": [
+        "156",
+        0
+      ],
+      "term_3": [
+        "155",
+        0
+      ],
+      "term_4": [
+        "154",
+        0
+      ],
+      "term_5": [
+        "153",
+        0
+      ],
+      "term_6": [
+        "152",
+        0
+      ],
+      "term_7": [
+        "134",
+        0
+      ],
+      "term_8": [
+        "132",
+        0
+      ]
+    },
+    "class_type": "CombineDictionaries",
+    "_meta": {
+      "title": "Combine Dictionaries"
+    }
+  },
+  "151": {
+    "inputs": {
+      "value": [
+        "138",
+        0
+      ]
+    },
+    "class_type": "Basic data handling: ForceCalculation",
+    "_meta": {
+      "title": "force calculation"
+    }
+  },
+  "152": {
+    "inputs": {
+      "name": "Eye Color",
+      "items": "red\nblue\ngreen\namber\nhazel\nviolet\ngray\ngold\npink\nblack\nheterochromia\nsilver\nturquoise",
+      "separator": " eyes, ",
+      "active": true
+    },
+    "class_type": "MetadataTextToListDict",
+    "_meta": {
+      "title": "Eye Color"
+    }
+  },
+  "153": {
+    "inputs": {
+      "name": "Hair Color",
+      "items": "red\nblue\ngreen\nyellow\nsilver\nwhite\nblack\nbrown\nblonde\npink\npurple\norange\ngray\ncyan\nlavender\nmaroon\nturquoise\nplatinum\nauburn\nash\nrose\nmint\nteal\nlilac\nburgundy\nindigo\nnavy\npeach\ncoral\nivory\ncharcoal\nbeige\nbronze\nhazel",
+      "separator": " hair, ",
+      "active": true
+    },
+    "class_type": "MetadataTextToListDict",
+    "_meta": {
+      "title": "Hair Color"
+    }
+  },
+  "154": {
+    "inputs": {
+      "name": "Hair Style",
+      "items": "long\nmedium\nmessy\nspiky\nstraight\nwavy\ncurly\nponytail\nhigh ponytail\nlow ponytail\nside ponytail\npigtails\ntwintails\nbuns\ntwin buns\nspace buns\nbob cut\nhime cut\nshaggy\nbraided\nsingle braid\ndouble braids\nside braid\nfishtail braid\nupdo\ntop knot\nchignon\nslicked back\nfringe\nbangs\nside bangs\nasymmetrical cut\nparted\ncenter part\nside part\nvoluminous\nloose\nwindswept\nwet\ndrill\nantenna",
+      "separator": " ",
+      "active": true
+    },
+    "class_type": "MetadataTextToListDict",
+    "_meta": {
+      "title": "Hair Style"
+    }
+  },
+  "155": {
+    "inputs": {
+      "name": "Body Features",
+      "items": "large breasts\nsmall breasts\nthick thighs\nwide hips\nflat chest\nplump ass\nnarrow waist\ncurvy\nthick\npetite\nslim\nsoft body\nnarrow shoulders\nsoft thighs",
+      "separator": ", ",
+      "active": false
+    },
+    "class_type": "MetadataTextToListDict",
+    "_meta": {
+      "title": "Body Features"
+    }
+  },
+  "156": {
+    "inputs": {
+      "name": "Clothing Type",
+      "items": "school uniform\nswimsuit\nmaid outfit\narmor\ncasual clothes\nkimono\nhoodie\nlatex outfit\nleather outfit\nlingerie\nsundress\njumpsuit\nwinter coat\nbattle dress\ncyberwear\nnaked\nbikini\nbunny suit\ncheongsam\ncrop top\nsports bra\nmini dress\nbodysuit\ntowel\napron\ncape\ncorset\nsling bikini\nmicrokini\nnurse outfit\nidol costume\ncheerleader outfit\ngym uniform\nyukata\nbandage outfit\nfishnet bodysuit\nmesh dress\nnipple pasties\nharness outfit\nrope bondage\nshibari outfit\nstrap outfit\nnipple tape\ncage suit",
+      "separator": ", ",
+      "active": false
+    },
+    "class_type": "MetadataTextToListDict",
+    "_meta": {
+      "title": "Clothing Type"
+    }
+  },
+  "157": {
+    "inputs": {
+      "name": "Pose",
+      "items": "standing\nsitting\nkneeling\nlying down\nbent over\narms crossed\nhands on hips\nleaning forward\nreclining\nhands behind back\nsquatting\nknees together",
+      "separator": ", ",
+      "active": false
+    },
+    "class_type": "MetadataTextToListDict",
+    "_meta": {
+      "title": "Pose"
+    }
+  },
+  "158": {
+    "inputs": {
+      "string_1": [
+        "103",
+        0
+      ],
+      "string_2": [
+        "159",
+        0
+      ]
+    },
+    "class_type": "CombineCleanStrings",
+    "_meta": {
+      "title": "Combine and Clean Strings"
+    }
+  },
+  "159": {
+    "inputs": {
+      "combined_dict": [
+        "151",
+        0
+      ]
+    },
+    "class_type": "GenerateStringFromDict",
+    "_meta": {
+      "title": "Generate String From Dictionary"
+    }
+  },
+  "160": {
+    "inputs": {
+      "vae_name": "orangemix.vae.pt"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  }
+}

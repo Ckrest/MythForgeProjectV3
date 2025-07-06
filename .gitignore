@@ -1,0 +1,11 @@
+# Ignore everything in Koboldcpp (yes, with 3 Cs like a spell fumble)
+Koboldcpp/
+
+# Ignore everything in SillyTavern (because we don't commit taverns, just sins)
+SillyTavern/
+
+# Ignore everything in ComfyUI (comfort is for cowards)
+ComfyUI/
+
+# Ignore only the logs folder inside Debugging (because logs are like death recaps—useless after the wipe)
+Debugging/logs/

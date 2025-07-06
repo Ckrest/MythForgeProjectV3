@@ -1,0 +1,28 @@
+[2025-07-06 01:20:23] --- Gemini Observer Initializing ---
+[2025-07-06 01:20:23] Command listener started.
+of all services...
+[2025-07-06 01:20:23] Attempting to start koboldcpp...
+[2025-07-06 01:20:23] koboldcpp started successfully with PID: 9392
+[2025-07-06 01:20:23] Started monitoring output for koboldcpp.
+[2025-07-06 01:20:24] Attempting to start comfyui...
+[2025-07-06 01:20:24] comfyui started successfully with PID: 9712
+[2025-07-06 01:20:24] Started monitoring output for comfyui.
+[2025-07-06 01:20:24] [comfyui ERROR] C:\Users\Ckrest\AppData\Local\Programs\Python\Python311\python.exe: can't open file 'C:\\Users\\Ckrest\\Documents\\MythForgeProjectV3\\ComfyUI\\main.py': [Errno 2] No such file or directory
+[2025-07-06 01:20:24] Process comfyui has terminated. Stopping monitoring.
+[2025-07-06 01:20:25] Attempting to start sillytavern...
+[2025-07-06 01:20:25] ERROR: Command not found for sillytavern: C:\Users\Ckrest\Documents\MythForgeProjectV3\SillyTavern\start.bat
+[2025-07-06 01:20:51] [koboldcpp] ***
+[2025-07-06 01:20:51] [koboldcpp] Welcome to KoboldCpp - Version 1.95.1
+[2025-07-06 01:20:51] [koboldcpp] For command line arguments, please refer to --help
+[2025-07-06 01:20:51] [koboldcpp] ***
+[2025-07-06 01:20:51] [koboldcpp] Auto Selected CUDA Backend (flag=0)
+[2025-07-06 01:20:51] [koboldcpp] Loading Chat Completions Adapter: C:\Users\Ckrest\AppData\Local\Temp\_MEI93922\kcpp_adapters\AutoGuess.json
+[2025-07-06 01:20:51] [koboldcpp] Chat Completions Adapter Loaded
+[2025-07-06 01:20:51] [koboldcpp] Auto Recommended GPU Layers: 42
+[2025-07-06 01:20:51] [koboldcpp] Detected Available GPU Memory: 11264 MB
+[2025-07-06 01:20:51] [koboldcpp] Detected Available RAM: 7546 MB
+[2025-07-06 01:20:51] [koboldcpp] Initializing dynamic library: koboldcpp_cublas.dll
+[2025-07-06 01:20:51] [koboldcpp] ==========
+[2025-07-06 01:20:51] [koboldcpp] Namespace(admin=False, admindir='', adminpassword='', analyze='', benchmark=None, blasbatchsize=512, blasthreads=2, chatcompletionsadapter='AutoGuess', cli=False, config=None, contextsize=4096, debugmode=0, defaultgenamt=512, draftamount=8, draftgpulayers=999, draftgpusplit=None, draftmodel=None, embeddingsgpu=False, embeddingsmaxctx=0, embeddingsmodel='', enableguidance=False, exportconfig='', exporttemplate='', failsafe=False, flashattention=False, forceversion=0, foreground=False, gpulayers=42, highpriority=False, hordeconfig=None, hordegenlen=0, hordekey='', hordemaxctx=0, hordemodelname='', hordeworkername='', host='', ignoremissing=False, launch=False, lora=None, loramult=1.0, maingpu=-1, maxrequestsize=32, mmproj=None, mmprojcpu=False, model=[], model_param='Z:/AIPorjects/AI_models/StudioML/bartowski/Crimson_Dawn-V0.1-GGUF/Crimson_Dawn-V0.1-Q5_K_S.gguf', moeexperts=-1, multiplayer=False, multiuser=1, noavx2=False, noblas=False, nobostoken=False, nocertify=False, nofastforward=False, nommap=False, nomodel=False, noshift=False, onready='', overridekv=None, overridetensors=None, password=None, port=5001, port_param=5001, preloadstory=None, prompt='', promptlimit=100, quantkv=0, quiet=False, remotetunnel=False, ropeconfig=[0.0, 10000.0], savedatafile=None, sdclamped=0, sdclampedsoft=0, sdclipg='', sdclipl='', sdconfig=None, sdlora='', sdloramult=1.0, sdmodel='', sdnotile=False, sdphotomaker='', sdquant=False, sdt5xxl='', sdthreads=2, sdtiledvae=768, sdvae='', sdvaeauto=False, showgui=False, singleinstance=False, skiplauncher=False, smartcontext=False, ssl=None, tensor_split=None, threads=2, ttsgpu=False, ttsmaxlen=4096, ttsmodel='', ttsthreads=0, ttswavtokenizer='', unpack='', useclblast=None, usecpu=False, usecublas=['normal', '0', 'mmq'], usemlock=False, usemmap=False, useswa=False, usevulkan=None, version=False, visionmaxres=1024, websearch=False, whispermodel='')
+[2025-07-06 01:20:51] [koboldcpp] ==========
+[2025-07-06 01:20:51] [koboldcpp] Loading Text Model: Z:\AIPorjects\AI_models\StudioML\bartowski\Crimson_Dawn-V0.1-GGUF\Crimson_Dawn-V0.1-Q5_K_S.gguf
