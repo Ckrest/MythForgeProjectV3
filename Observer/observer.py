@@ -33,27 +33,37 @@ process_status = {
         "pid": None,
         "last_output": "",
         "last_output_time": None,
-        "start_time": None
+        "start_time": None,
+        "exit_code": None
     },
     "comfyui": {
         "status": "stopped",
         "pid": None,
         "last_output": "",
         "last_output_time": None,
-        "start_time": None
+        "start_time": None,
+        "exit_code": None
     },
     "sillytavern": {
         "status": "stopped",
         "pid": None,
         "last_output": "",
         "last_output_time": None,
-        "start_time": None
+        "start_time": None,
+        "exit_code": None
     }
 }
 process_objects = {
     "koboldcpp": None,
     "comfyui": None,
     "sillytavern": None
+}
+
+# Track whether a shutdown was requested for each process.
+expected_shutdown = {
+    "koboldcpp": False,
+    "comfyui": False,
+    "sillytavern": False
 }
 
 # --- Utility Functions ---
@@ -79,42 +89,40 @@ def update_status_file():
 
 def start_process(name, command):
     """Starts a given process and updates its status."""
-    if process_status[name]["status"] == "running":
-        log_message(f"Process {name} is already running.")
+    if process_status[name]["status"] in ("running", "starting"):
+        log_message(f"Process {name} is already running or starting.")
         return
 
     log_message(f"Attempting to start {name}...")
     try:
         # For .py files, we need to run them with python.
         if command.endswith('.py'):
-             # Using sys.executable to ensure it uses the same python interpreter
             executable = [os.sys.executable, command]
         else:
             executable = [command]
 
-        # Use Popen to start the process without blocking.
-        # Capture stdout and stderr to monitor their output.
-        # `creationflags` is used on Windows to start the process in a new console window.
         proc = subprocess.Popen(
             executable,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
-            bufsize=1, # Line-buffered
+            bufsize=1,
             universal_newlines=True,
             creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
         )
 
         process_objects[name] = proc
+        expected_shutdown[name] = False
         process_status[name].update({
-            "status": "running",
+            "status": "starting",
             "pid": proc.pid,
-            "start_time": datetime.now().isoformat()
+            "start_time": datetime.now().isoformat(),
+            "exit_code": None
         })
-        log_message(f"{name} started successfully with PID: {proc.pid}")
+        log_message(f"{name} started with PID: {proc.pid}")
 
-        # Start a thread to monitor the output of this new process
         threading.Thread(target=monitor_output, args=(name, proc), daemon=True).start()
+        threading.Thread(target=monitor_startup, args=(name, proc), daemon=True).start()
 
     except FileNotFoundError:
         log_message(f"ERROR: Command not found for {name}: {command}")
@@ -126,12 +134,12 @@ def start_process(name, command):
 def stop_process(name):
     """Stops a given process by its name."""
     proc = process_objects.get(name)
-    if proc and proc.poll() is None: # Check if the process is running
+    if proc and proc.poll() is None:
+        expected_shutdown[name] = True
         log_message(f"Stopping {name} (PID: {proc.pid})...")
         try:
-            # Terminate the entire process group to catch child processes
             subprocess.run(f"TASKKILL /F /T /PID {proc.pid}", check=True, capture_output=True)
-            proc.wait(timeout=5) # Wait for the process to terminate
+            proc.wait(timeout=5)
             log_message(f"{name} stopped.")
         except subprocess.TimeoutExpired:
             log_message(f"WARNING: {name} did not terminate gracefully, forcing kill.")
@@ -142,9 +150,11 @@ def stop_process(name):
     process_status[name].update({
         "status": "stopped",
         "pid": None,
-        "start_time": None
+        "start_time": None,
+        "exit_code": None
     })
     process_objects[name] = None
+    expected_shutdown[name] = False
 
 
 def monitor_output(name, proc):
@@ -153,7 +163,6 @@ def monitor_output(name, proc):
     This is crucial for not blocking the main loop.
     """
     log_message(f"Started monitoring output for {name}.")
-    # Monitor stdout
     for line in iter(proc.stdout.readline, ''):
         clean_line = line.strip()
         if clean_line:
@@ -161,16 +170,45 @@ def monitor_output(name, proc):
             process_status[name]["last_output_time"] = datetime.now().isoformat()
             log_message(f"[{name}] {clean_line}")
 
-    # After the process ends, check stderr for any final error messages
     proc.stdout.close()
     error_output = proc.stderr.read().strip()
     if error_output:
         log_message(f"[{name} ERROR] {error_output}")
         process_status[name]["last_output"] = error_output
 
-    log_message(f"Process {name} has terminated. Stopping monitoring.")
-    process_status[name]["status"] = "stopped"
+    exit_code = proc.poll()
+    process_status[name]["exit_code"] = exit_code
+
+    if expected_shutdown[name]:
+        log_message(f"{name} stopped with exit code {exit_code}")
+        process_status[name]["status"] = "stopped"
+    else:
+        log_message(f"{name} crashed with exit code {exit_code}")
+        process_status[name]["status"] = "crashed"
+
     process_status[name]["pid"] = None
+    expected_shutdown[name] = False
+
+
+def monitor_startup(name, proc, timeout=10):
+    """Verify a process is still running after a short delay."""
+    start = time.time()
+    while time.time() - start < timeout:
+        if proc.poll() is not None:
+            # Process exited during startup
+            exit_code = proc.returncode
+            process_status[name].update({
+                "status": "error_startup",
+                "pid": None,
+                "exit_code": exit_code
+            })
+            log_message(f"{name} failed to start. Exit code {exit_code}")
+            return
+        time.sleep(1)
+
+    if process_status[name]["status"] == "starting":
+        process_status[name]["status"] = "running"
+        log_message(f"{name} startup verified.")
 
 
 # --- Command Handling ---
